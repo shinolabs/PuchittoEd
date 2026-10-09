@@ -1,15 +1,27 @@
 <script lang="ts">
+  import { menuBarState } from '../../state/menuBarState.svelte'
+
   let { label }: { label: string } = $props()
 
-  let isOpen = $state(false)
+  let isOpen = $derived(menuBarState.selected === label)
 
   const onclick = (e: MouseEvent): void => {
-    isOpen = !isOpen
+    if (menuBarState.selected !== undefined) {
+      menuBarState.selected = undefined
+    } else {
+      console.log(`selected ${label}`)
+      menuBarState.selected = label
+    }
+
     e.stopPropagation()
   }
 
   const onmouseover = (e: MouseEvent): void => {
-    void e
+    if (menuBarState.selected === undefined) {
+      return
+    }
+
+    menuBarState.selected = label
   }
 
   const onfocus = (e: FocusEvent): void => {
@@ -18,14 +30,14 @@
 
   const onkeydown = (e: KeyboardEvent): void => {
     if (e.key === 'Enter' || e.key === ' ') {
-      isOpen = !isOpen
+      menuBarState.selected = label
     } else if (e.key === 'Escape') {
-      isOpen = false
+      menuBarState.selected = undefined
     }
   }
 </script>
 
-<svelte:window onclick={() => (isOpen = false)} />
+<svelte:window onclick={() => (menuBarState.selected = undefined)} />
 
 <div
   class="menu-item"
