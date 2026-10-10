@@ -48,18 +48,17 @@
     {/if}
   </span>
   <span class="name">{name}</span>
-  <span class="hotkey">{hotkey}</span>
-  <span class="chev">
-    {#if children !== undefined}
-      <ChevronRight size={12} />
-    {/if}
-  </span>
   {#if children !== undefined}
+    <span class="chev">
+      <ChevronRight size={12} />
+    </span>
     <div class="dropdown" class:open={unfolded}>
       {#each children as child (child.name)}
         <RecursiveMenuButton node={child} />
       {/each}
     </div>
+  {:else}
+    <span class="hotkey">{hotkey}</span>
   {/if}
 </button>
 
@@ -67,7 +66,7 @@
   .dropdown-button {
     position: relative;
     display: grid;
-    grid-template-columns: 18px 1fr auto 12px;
+    grid-template-columns: 18px 1fr auto;
     align-items: center;
     background: none;
     border: none;
