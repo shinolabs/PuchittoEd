@@ -1,8 +1,10 @@
+import type { Component } from 'svelte'
 import { resetSelectedObject, setSelectedObject } from '../../state/selectionState.svelte'
 import type { EditorGame } from '../editorGame'
 import { openEntitySearch } from '../helpers/searchHelpers'
 import { HotkeyHandlingResult } from '../systems/hotkey/hotkeyHandlingResult'
 import { HotkeyTool } from '../systems/hotkey/hotkeyTool'
+import { ScanSearch } from '@lucide/svelte'
 
 export class FindEntityTool extends HotkeyTool {
   constructor() {
@@ -18,6 +20,10 @@ export class FindEntityTool extends HotkeyTool {
 
   get menuBarPath(): string {
     return 'Object/Find'
+  }
+
+  get icon(): Component {
+    return ScanSearch
   }
 
   available(game: EditorGame): boolean {

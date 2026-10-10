@@ -7,6 +7,8 @@ import { EntityCreatedCommand } from '../systems/history/commands/entityCreatedC
 import { setSelectedObject } from '../../state/selectionState.svelte'
 import type { EditorEntityDefinition } from '../data/editorEntityDefinition'
 import { openSearch, type SearchItem } from '../../state/searchState.svelte'
+import type { Component } from 'svelte'
+import { Plus } from '@lucide/svelte'
 
 export class CreateEntityTool extends HotkeyTool {
   constructor() {
@@ -26,6 +28,10 @@ export class CreateEntityTool extends HotkeyTool {
 
   get menuOrder(): number {
     return 0
+  }
+
+  get icon(): Component {
+    return Plus
   }
 
   available(game: EditorGame): boolean {

@@ -82,7 +82,13 @@
 
   {#if tree !== undefined && 'children' in tree}
     {#each tree.children as node (node.name)}
-      <RecursiveMenuButton {node} />
+      {#if 'children' in node}
+        <MenuBarItem label={node.name}>
+          {#each node.children as button (button.name)}
+            <RecursiveMenuButton node={button} />
+          {/each}
+        </MenuBarItem>
+      {/if}
     {/each}
   {/if}
 

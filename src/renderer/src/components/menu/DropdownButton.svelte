@@ -1,20 +1,46 @@
 <script lang="ts">
   import type { Component } from 'svelte'
+  import type { ToolTreeNode } from '../../editor/systems/hotkey/hotkeyToolRegistrar'
+  import RecursiveMenuButton from './RecursiveMenuButton.svelte'
+  import { ChevronRight } from '@lucide/svelte'
 
   let {
     clicked,
     name,
     icon = undefined,
-    hotkey = undefined
+    hotkey = undefined,
+    children = undefined
   }: {
     clicked: () => void | undefined
     name: string
     icon?: Component | undefined
     hotkey?: string | undefined
+    children?: ToolTreeNode[] | undefined
   } = $props()
+
+  const isDropdown = $derived(children !== undefined)
+  let unfolded = $state(false)
+
+  const onmouseover = (): void => {
+    if (!isDropdown) {
+      return
+    }
+
+    unfolded = true
+  }
+
+  const onmouseleave = (): void => {
+    if (!isDropdown) {
+      return
+    }
+
+    unfolded = false
+  }
+
+  const onfocus = (): void => {}
 </script>
 
-<button class="dropdown-button" onclick={clicked}>
+<button class="dropdown-button" onclick={clicked} {onmouseover} {onmouseleave} {onfocus}>
   <span class="icon">
     {#if icon !== undefined}
       {@const ButtonIcon = icon}
@@ -23,11 +49,23 @@
   </span>
   <span class="name">{name}</span>
   <span class="hotkey">{hotkey}</span>
-  <span class="chev"></span>
+  <span class="chev">
+    {#if children !== undefined}
+      <ChevronRight size={12} />
+    {/if}
+  </span>
+  {#if children !== undefined}
+    <div class="dropdown" class:open={unfolded}>
+      {#each children as child (child.name)}
+        <RecursiveMenuButton node={child} />
+      {/each}
+    </div>
+  {/if}
 </button>
 
 <style>
   .dropdown-button {
+    position: relative;
     display: grid;
     grid-template-columns: 18px 1fr auto 12px;
     align-items: center;
@@ -66,5 +104,24 @@
     color: var(--text-muted);
     padding-left: 18px;
     font-size: 11px;
+  }
+
+  .dropdown {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: -5px;
+    left: calc(100% + 2px);
+    min-width: 210px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    min-width: 220px;
+    z-index: 99999;
+    padding: 4px;
+  }
+
+  .dropdown.open {
+    display: flex;
   }
 </style>
