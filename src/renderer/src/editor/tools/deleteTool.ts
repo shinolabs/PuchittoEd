@@ -5,6 +5,8 @@ import { HotkeyHandlingResult } from '../systems/hotkey/hotkeyHandlingResult'
 import { HotkeyTool } from '../systems/hotkey/hotkeyTool'
 import { recordCommand } from '../systems/history/editorHistory'
 import { EntityDeletedCommand } from '../systems/history/commands/entityDeletedCommand'
+import type { Component } from 'svelte'
+import { Trash } from '@lucide/svelte'
 
 export class DeleteTool extends HotkeyTool {
   private _object?: GameObject
@@ -22,6 +24,10 @@ export class DeleteTool extends HotkeyTool {
 
   get menuBarPath(): string {
     return 'Object/Delete'
+  }
+
+  get icon(): Component {
+    return Trash
   }
 
   available(game: EditorGame): boolean {

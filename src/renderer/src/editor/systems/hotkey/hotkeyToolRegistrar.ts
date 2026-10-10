@@ -1,3 +1,4 @@
+import type { Component } from 'svelte'
 import type { HotkeyToolSystem } from '../hotkeyToolSystem.svelte'
 import type { HotkeyTool } from './hotkeyTool'
 
@@ -18,6 +19,8 @@ export type ToolTreeLeaf = {
   name: string
   toolName: string
   order: number
+  icon?: Component
+  hotkey?: string
 }
 
 /**
@@ -70,7 +73,9 @@ export const getToolTree = (): ToolTreeNode => {
         lastNode.children.push({
           name: part,
           toolName: obj.name,
-          order: obj.menuOrder
+          order: obj.menuOrder,
+          icon: obj.icon,
+          hotkey: obj.hotkeyComboString
         })
         lastNode.children.sort((l, r) => l.order - r.order)
         continue

@@ -61,14 +61,20 @@
     cursor: pointer;
     border-radius: 4px;
     position: relative;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
   }
 
   .menu-item:hover {
     background: var(--bg-hover);
+    color: var(--text-light);
   }
 
   .menu-item.open {
-    background: var(--bg-hover);
+    background: var(--bg-panel);
+    border-color: var(--border-color);
+    color: var(--text-light);
   }
 
   .dropdown {
@@ -82,7 +88,7 @@
     border-radius: 4px;
     min-width: 220px;
     z-index: 5;
-    padding: 4px 0;
+    padding: 4px;
   }
 
   .dropdown.open {

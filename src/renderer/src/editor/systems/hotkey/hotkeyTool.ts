@@ -1,6 +1,8 @@
 import type { HotkeyHandlingResult } from './hotkeyHandlingResult'
 import type { EditorGame } from '../../editorGame'
 import type { HotkeyConfig } from './hotkeyConfig'
+import type { Component } from 'svelte'
+import { keyNameToDisplayName } from '../../helpers/hotkeyFormattingHelpers'
 
 /**
  * The base class for any hotkey tool.
@@ -39,6 +41,26 @@ export abstract class HotkeyTool {
    */
   get menuOrder(): number {
     return 0
+  }
+
+  /**
+   * The icon of the hotkey.
+   */
+  get icon(): Component | undefined {
+    return undefined
+  }
+
+  /**
+   * The hotkey combo string.
+   */
+  get hotkeyComboString(): string {
+    const hotkey = this.config
+    if (hotkey.modifiers === undefined || hotkey.modifiers.length < 1) {
+      return keyNameToDisplayName(hotkey.key)
+    }
+
+    const modifiers = hotkey.modifiers.map((k) => keyNameToDisplayName(k)).join('+')
+    return `${modifiers}+${keyNameToDisplayName(hotkey.key)}`
   }
 
   /**

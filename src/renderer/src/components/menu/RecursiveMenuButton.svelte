@@ -19,5 +19,10 @@
     {/each}
   </MenuBarItem>
 {:else}
-  <DropdownButton clicked={() => invokeTool(node.toolName)}>{node.name}</DropdownButton>
+  <DropdownButton
+    clicked={() => invokeTool(node.toolName)}
+    icon={node.icon}
+    hotkey={node.hotkey}
+    name={node.name}
+  />
 {/if}
