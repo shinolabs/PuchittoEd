@@ -4,6 +4,8 @@ import { HotkeyHandlingResult } from '../systems/hotkey/hotkeyHandlingResult'
 import { HotkeyTool } from '../systems/hotkey/hotkeyTool'
 import { selectionState } from '../../state/selectionState.svelte'
 import { recordTransformManipulation } from '../systems/history/commands/entityTransformManipulationCommand'
+import type { Component } from 'svelte'
+import { Target } from '@lucide/svelte'
 
 export class BringObjectToViewTool extends HotkeyTool {
   private _object?: GameObject
@@ -21,6 +23,10 @@ export class BringObjectToViewTool extends HotkeyTool {
 
   get menuBarPath(): string {
     return 'Object/Bring to View'
+  }
+
+  get icon(): Component {
+    return Target
   }
 
   available(game: EditorGame): boolean {

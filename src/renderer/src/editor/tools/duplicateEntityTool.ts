@@ -9,6 +9,8 @@ import {
   getSerializedDataForObject
 } from '../systems/history/commands/entityCreatedCommand'
 import { PlaceholderObject } from '../entities/placeholderObject'
+import type { Component } from 'svelte'
+import { CopyPlus } from '@lucide/svelte'
 
 /**
  * Duplicates an entity.
@@ -33,6 +35,10 @@ export class DuplicateEntityTool extends HotkeyTool {
 
   get menuOrder(): number {
     return 0
+  }
+
+  get icon(): Component {
+    return CopyPlus
   }
 
   available(game: EditorGame): boolean {

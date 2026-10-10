@@ -4,6 +4,8 @@ import { HotkeyHandlingResult } from '../systems/hotkey/hotkeyHandlingResult'
 import { HotkeyTool } from '../systems/hotkey/hotkeyTool'
 import { selectionState } from '../../state/selectionState.svelte'
 import { recordTransformManipulation } from '../systems/history/commands/entityTransformManipulationCommand'
+import type { Component } from 'svelte'
+import { ScanEye } from '@lucide/svelte'
 
 export class LookAtObjectTool extends HotkeyTool {
   private _object?: GameObject
@@ -21,6 +23,10 @@ export class LookAtObjectTool extends HotkeyTool {
 
   get menuBarPath(): string {
     return 'Object/Look at'
+  }
+
+  get icon(): Component {
+    return ScanEye
   }
 
   available(game: EditorGame): boolean {

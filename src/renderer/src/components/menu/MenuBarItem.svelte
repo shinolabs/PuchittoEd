@@ -9,14 +9,13 @@
     if (menuBarState.selected !== undefined) {
       menuBarState.selected = undefined
     } else {
-      console.log(`selected ${label}`)
       menuBarState.selected = label
     }
 
     e.stopPropagation()
   }
 
-  const onmouseover = (e: MouseEvent): void => {
+  const onmouseover = (): void => {
     if (menuBarState.selected === undefined) {
       return
     }
@@ -87,7 +86,7 @@
     border: 1px solid var(--border-color);
     border-radius: 4px;
     min-width: 220px;
-    z-index: 5;
+    z-index: 99999;
     padding: 4px;
   }
 
