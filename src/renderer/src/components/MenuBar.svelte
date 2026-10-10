@@ -71,13 +71,13 @@
 
 <header class="menu-bar">
   <MenuBarItem label="File">
-    <DropdownButton clicked={newLevel}>New realm</DropdownButton>
-    <DropdownButton clicked={loadLevel}>Load realm</DropdownButton>
-    <DropdownButton clicked={saveLevel}>Save realm</DropdownButton>
+    <DropdownButton clicked={newLevel} name="New realm" />
+    <DropdownButton clicked={loadLevel} name="Load realm" />
+    <DropdownButton clicked={saveLevel} name="Save realm" />
     <DropdownSeparator />
-    <DropdownButton clicked={exportLevel}>Export realm as ALF</DropdownButton>
+    <DropdownButton clicked={exportLevel} name="Export realm as ALF" />
     <DropdownSeparator />
-    <DropdownButton clicked={exit}>Exit</DropdownButton>
+    <DropdownButton clicked={exit} name="Exit" />
   </MenuBarItem>
 
   {#if tree !== undefined && 'children' in tree}
@@ -87,17 +87,18 @@
   {/if}
 
   <MenuBarItem label="About">
-    <DropdownButton clicked={about}>About PuchittoEd</DropdownButton>
+    <DropdownButton clicked={about} name="About PuchittoEd" />
   </MenuBarItem>
 </header>
 
 <style>
   .menu-bar {
-    height: 28px;
+    height: 30px;
     flex-shrink: 0;
     background-color: var(--bg-header);
     display: flex;
     align-items: center;
     border-bottom: 1px solid var(--bg-deep);
+    padding: 0 6px;
   }
 </style>
