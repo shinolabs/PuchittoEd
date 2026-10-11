@@ -5,6 +5,7 @@
   import Back from '@lucide/svelte/icons/chevron-left'
   import Next from '@lucide/svelte/icons/chevron-right'
   import Folder from '@lucide/svelte/icons/folder'
+  import { setSelectedAsset } from '../state/selectionState.svelte'
 
   let folderStack: string[] = $state([''])
   let currentFolder = $derived(folderStack.join('/'))
@@ -45,6 +46,8 @@
   const onAssetSelected = (node: AssetNode): void => {
     if (node.kind === 'folder') {
       folderStack.push(node.name)
+    } else {
+      setSelectedAsset(node)
     }
   }
 

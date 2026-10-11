@@ -1,5 +1,5 @@
 import type { Component } from 'svelte'
-import { resetSelectedObject, setSelectedObject } from '../../state/selectionState.svelte'
+import { resetSelection, setSelectedObject } from '../../state/selectionState.svelte'
 import type { EditorGame } from '../editorGame'
 import { openEntitySearch } from '../helpers/searchHelpers'
 import { HotkeyHandlingResult } from '../systems/hotkey/hotkeyHandlingResult'
@@ -33,7 +33,7 @@ export class FindEntityTool extends HotkeyTool {
   tick(game: EditorGame): HotkeyHandlingResult {
     openEntitySearch().then((id) => {
       if (id === undefined) {
-        resetSelectedObject()
+        resetSelection()
       } else {
         setSelectedObject(game.getObjectById(id))
       }

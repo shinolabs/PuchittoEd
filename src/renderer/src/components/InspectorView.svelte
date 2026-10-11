@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GameObject } from 'puchitto/objects'
-  import { selectionState } from '../state/selectionState.svelte'
+  import { getSelectedAsset, getSelectedObjectId, selectionState } from '../state/selectionState.svelte'
   import { editor } from '../editor/editorGame'
   import InspectorPartHeader from './inspector/InspectorPartHeader.svelte'
   import Move from '@lucide/svelte/icons/move'
@@ -11,11 +11,13 @@
   import InspectorPart from './inspector/InspectorPart.svelte'
   import ObjectProperties from './inspector/ObjectProperties.svelte'
 
-  let obj: GameObject | undefined = $derived(editor.getObjectById(selectionState.id))
+  const selectionType = $derived(selectionState.value.type)
+
+  const obj: GameObject | undefined = $derived(editor.getObjectById(getSelectedObjectId()))
 </script>
 
 <div class="container">
-  {#if obj !== undefined && !obj.isLocalObject}
+  {#if selectionType === 'entity' && obj !== undefined}
     <ObjectProperties {obj} />
     <InspectorPartHeader>
       <div slot="icon">
@@ -48,8 +50,10 @@
       <div slot="name">MiniAntics</div>
     </InspectorPartHeader>
     <InspectorPart>
-      <ObjectAntics id={selectionState.id} />
+      <ObjectAntics id={obj.id} />
     </InspectorPart>
+  {:else if selectionType === 'asset'}
+    <div>selected asset {getSelectedAsset().path}</div>
   {:else}
     <div class="empty">
       <div>No entity selected.</div>

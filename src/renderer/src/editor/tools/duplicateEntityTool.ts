@@ -1,5 +1,5 @@
 import type { GameObject } from 'puchitto/objects'
-import { selectionState, setSelectedObject } from '../../state/selectionState.svelte'
+import { getSelectedObjectId, setSelectedObject } from '../../state/selectionState.svelte'
 import type { EditorGame } from '../editorGame'
 import { HotkeyHandlingResult } from '../systems/hotkey/hotkeyHandlingResult'
 import { HotkeyTool } from '../systems/hotkey/hotkeyTool'
@@ -42,7 +42,7 @@ export class DuplicateEntityTool extends HotkeyTool {
   }
 
   available(game: EditorGame): boolean {
-    const id = selectionState.id
+    const id = getSelectedObjectId()
     if (id >= 0) {
       return game.getObjectById(id) !== undefined
     }
@@ -51,7 +51,7 @@ export class DuplicateEntityTool extends HotkeyTool {
   }
 
   setup(game: EditorGame): void {
-    const id = selectionState.id
+    const id = getSelectedObjectId()
     this._object = game.getObjectById(id)
   }
 

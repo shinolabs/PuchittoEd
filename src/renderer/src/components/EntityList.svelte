@@ -4,12 +4,14 @@
   import EntityListItem from './entities/EntityListItem.svelte'
   import type { GameObject } from 'puchitto/objects'
   import {
-    resetSelectedObject,
-    selectionState,
+    getSelectedObjectId,
+    resetSelection,
     setSelectedObject
   } from '../state/selectionState.svelte'
 
-  let objects: GameObject[] = []
+  let objects: GameObject[] = $state([])
+
+  const selectedId = $derived(getSelectedObjectId())
 
   let onclicked = (id: number): void => {
     setSelectedObject(editor.getObjectById(id))
@@ -29,7 +31,7 @@
     })
 
     editor.eventStream.on('sceneCreated', () => {
-      resetSelectedObject()
+      resetSelection()
       reloadObjects()
     })
   })
@@ -41,7 +43,7 @@
       name={object.name}
       id={object.id}
       onselect={onclicked}
-      selected={object.id == selectionState.id}
+      selected={selectedId === object.id}
     />
   {/each}
 </div>

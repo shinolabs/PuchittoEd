@@ -23,7 +23,7 @@ import { TransformsObject } from './entities/transformsObject'
 import { SphereGizmo } from './entities/gizmos/sphereGizmo'
 import type { GenericGizmo } from './entities/gizmos/genericGizmo'
 import { MeshGizmo } from './entities/gizmos/meshGizmo'
-import { selectionState } from '../state/selectionState.svelte'
+import { getSelectedObjectId, isObjectSelected } from '../state/selectionState.svelte'
 import { callEditorReadyCallbacks } from './helpers/loadHelpers'
 import { HotkeyToolSystem } from './systems/hotkeyToolSystem.svelte'
 import { EditorHistory } from './systems/history/editorHistory'
@@ -116,12 +116,13 @@ export class EditorGame extends Game {
    * @param visible Whether editor objects are visible/
    */
   setObjectEditorVisibility(visible: boolean): void {
-    this.handles.setVisible(selectionState.id !== -1 && visible)
+    this.handles.setVisible(isObjectSelected() && visible)
     this._grid?.setVisible(visible)
 
+    const selectedId = getSelectedObjectId()
     for (const values of this._objectGizmoMap.values()) {
       for (const gizmo of values) {
-        gizmo.setVisible(visible && (gizmo.display === 'always' || selectionState.id == gizmo.id))
+        gizmo.setVisible(visible && (gizmo.display === 'always' || selectedId == gizmo.id))
       }
     }
   }

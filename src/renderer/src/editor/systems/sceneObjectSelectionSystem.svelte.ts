@@ -5,8 +5,10 @@ import type { GameSystem } from 'puchitto/systems'
 import type { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {
-  resetSelectedObject,
-  selectionState,
+  getSelectedObjectId,
+  isObjectSelected,
+  isSpecificObjectSelected,
+  resetSelection,
   setSelectedObject
 } from '../../state/selectionState.svelte'
 import { GenericGizmo } from '../entities/gizmos/genericGizmo'
@@ -38,10 +40,10 @@ export class SceneObjectSelectionSystem implements GameSystem {
     this._game = game as EditorGame
 
     $effect(() => {
-      if (selectionState.id === -1) {
-        this._setSelection(null)
+      if (!isObjectSelected()) {
+        this._setSelection(undefined)
       } else {
-        const object = this._game.getObjectById(selectionState.id)
+        const object = this._game.getObjectById(getSelectedObjectId())
         this._setSelection(object)
       }
     })
@@ -134,16 +136,17 @@ export class SceneObjectSelectionSystem implements GameSystem {
     }
 
     if (object === undefined) {
-      if (selectionState.id !== -1) {
-        resetSelectedObject()
+      if (isObjectSelected()) {
+        resetSelection()
       }
+
       this._outlinePass.selectedObjects = []
       this._lastSelectedObject = object
       return
     }
 
     const actualObject = object instanceof GenericGizmo ? object.target : object
-    if (selectionState.id !== actualObject.id) {
+    if (!isSpecificObjectSelected(actualObject.id)) {
       setSelectedObject(actualObject)
     }
 
