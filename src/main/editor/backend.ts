@@ -58,7 +58,7 @@ export class EditorBackend {
     ipcMain.handle('select-new-project-folder', () => this._selectNewProjectFolder())
     ipcMain.handle('select-project', () => this._selectProject())
     ipcMain.handle('save-level', (_, level: Level) => this._saveLevel(level))
-    ipcMain.handle('export-level', (_, level: Level) => this._exportLevel(level))
+    ipcMain.handle('export-level', (_, level: Level, trackedAssets: string[]) => this._exportLevel(level, trackedAssets))
     ipcMain.handle('copy-files-to-project', (_, filePaths: string[]) =>
       this._copyFilesToProject(filePaths)
     )
@@ -219,7 +219,7 @@ export class EditorBackend {
    * Exports a level.
    * @param level The level data.
    */
-  private async _exportLevel(level: Level): Promise<boolean> {
+  private async _exportLevel(level: Level, trackedAssets: string[]): Promise<boolean> {
     if (!(await this._saveLevel(level))) {
       return false
     }
@@ -237,7 +237,10 @@ export class EditorBackend {
         continue
       }
 
-      builder.addFile(path, file)
+      if (trackedAssets.findIndex(s => s.indexOf(file) > -1) > -1) {
+        builder.addFile(path, file)
+        console.info(`[EditorBackend::_exportLevel] Packing ${file} into the ALF bundle.`)
+      }
     }
 
     const result = await dialog.showSaveDialog({
