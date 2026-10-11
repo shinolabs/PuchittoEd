@@ -29,6 +29,7 @@ import { HotkeyToolSystem } from './systems/hotkeyToolSystem.svelte'
 import { EditorHistory } from './systems/history/editorHistory'
 import { registerToolsInSystem } from './systems/hotkey/hotkeyToolRegistrar'
 import { resetModifiedFlag } from '../state/projectState.svelte'
+import { Logger } from 'puchitto/logging'
 
 /**
  * The backing class for the editor, extending a normal Puchitto game.
@@ -85,6 +86,16 @@ export class EditorGame extends Game {
    * The hotkey tool system.
    */
   private _toolSystem: HotkeyToolSystem
+
+  /**
+   * The main editor logger.
+   */
+  private _logger: Logger = new Logger('Editor')
+
+  /**
+   * The list of used assets.
+   */
+  private _usedAssets: Set<string> = new Set()
 
   /**
    * Constructs a new editor.
@@ -267,6 +278,9 @@ export class EditorGame extends Game {
     this.createScene()
     this._makeEditorEntities()
     this._dataManager.addProvider(new AssetProtocolDataProvider())
+
+    this._usedAssets.clear()
+    this._dataManager.onAssetResolved = this._onAssetResolved.bind(this)
   }
 
   /**
@@ -294,7 +308,15 @@ export class EditorGame extends Game {
    */
   async exportLevel(): Promise<void> {
     const data = buildLevelJsonData(editor)
-    await window.puchittoAPI.exportLevel(data)
+    await window.puchittoAPI.exportLevel(data, [...this._usedAssets])
+  }
+
+  /**
+   * Called when we resolve an asset.
+   * @param address The address of the asset.
+   */
+  private _onAssetResolved(address: string): void {
+    this._usedAssets.add(address.replace('asset://', ''))
   }
 
   /**
