@@ -316,7 +316,7 @@ export class EditorGame extends Game {
    * @param address The address of the asset.
    */
   private _onAssetResolved(address: string): void {
-    this._usedAssets.add(address.replace('asset://', ''))
+    this._usedAssets.add(address.replace('asset://', '').replaceAll('/', '\\'))
   }
 
   /**
